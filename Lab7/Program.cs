@@ -55,3 +55,19 @@ namespace Hotel
             Console.ReadKey(true);
             Console.Clear();
         }
+        static void ShowAbout()
+        {
+            Console.WriteLine("Тема: Готель");
+            Console.WriteLine("Головна сутність: Бронювання");
+            Console.WriteLine("Довідник: Категорія номера");
+            Console.WriteLine();
+            Console.WriteLine("Поля сутності «Бронювання»:");
+            Console.WriteLine("- string   : номер броні");
+            Console.WriteLine("- string   : прізвище гостя");
+            Console.WriteLine("- int      : номер кімнати");
+            Console.WriteLine("- int      : код категорії (з довідника)");
+            Console.WriteLine("- DateTime : дата заїзду");
+            Console.WriteLine("- int      : кількість ночей");
+            Console.WriteLine("- double   : ціна за ніч");
+            Console.WriteLine("- bool     : чи сплачено");
+        }
