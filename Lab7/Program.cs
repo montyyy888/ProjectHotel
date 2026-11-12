@@ -71,3 +71,22 @@ namespace Hotel
             Console.WriteLine("- double   : ціна за ніч");
             Console.WriteLine("- bool     : чи сплачено");
         }
+        static void ShowCostTable()
+        {
+            Console.WriteLine("=== Таблиця вартості проживання ===");
+
+            double pricePerNight = 1200.0;
+            double from = 0.5;   // півдоби — наприклад, пізній виїзд
+            double to = 4.0;
+            double step = 0.5;
+
+            Console.WriteLine($"{"Ночей",8}{"Вартість",12}{"Зі знижкою 10%",18}");
+
+            // 1e-9 додаємо, щоб остання стрічка не зникла через похибку double
+            for (double days = from; days <= to + 1e-9; days += step)
+            {
+                double total = days * pricePerNight;
+                double withDiscount = total * 0.9;
+                Console.WriteLine($"{days,8:F1}{total,12:F2}{withDiscount,18:F2}");
+            }
+        }
