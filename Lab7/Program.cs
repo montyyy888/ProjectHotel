@@ -90,3 +90,68 @@ namespace Hotel
                 Console.WriteLine($"{days,8:F1}{total,12:F2}{withDiscount,18:F2}");
             }
         }
+        static void ShowOccupancyTable()
+        {
+            Console.WriteLine("=== Зведена таблиця завантаженості ===");
+
+            Console.Write("Введіть кількість категорій (рядків, 1–20): ");
+            int rows;
+            if (!int.TryParse(Console.ReadLine(), out rows) || rows <= 0 || rows > 20)
+            {
+                Console.WriteLine("Помилка! Потрібне ціле число від 1 до 20.");
+                return;
+            }
+
+            Console.Write("Введіть кількість днів (стовпців, 1–10): ");
+            int cols;
+            if (!int.TryParse(Console.ReadLine(), out cols) || cols <= 0 || cols > 10)
+            {
+                Console.WriteLine("Помилка! Потрібне ціле число від 1 до 10.");
+                return;
+            }
+
+            Console.WriteLine();
+
+            // Шапка таблиці (друкується до зовнішнього циклу)
+            Console.Write($"{"Категорія",-12}");
+            for (int j = 1; j <= cols; j++)
+            {
+                string head = "День " + j;
+                Console.Write($"{head,8}");
+            }
+            Console.WriteLine($"{"Разом",8}");
+
+            int[] colSums = new int[cols]; // підсумки по стовпцях
+            int grandTotal = 0;
+
+            // Зовнішній цикл — рядки (категорії)
+            for (int i = 1; i <= rows; i++)
+            {
+                string name = "Кат. " + i;
+                Console.Write($"{name,-12}");
+
+                int rowSum = 0; // обнуляється для кожного рядка
+
+                // Внутрішній цикл — стовпці (дні)
+                for (int j = 1; j <= cols; j++)
+                {
+                    int val = i * j; // умовна кількість зайнятих номерів
+                    rowSum += val;
+                    colSums[j - 1] += val;
+                    Console.Write($"{val,8}");
+                }
+
+                Console.WriteLine($"{rowSum,8}");
+                grandTotal += rowSum;
+            }
+
+            // Рядок підсумків по стовпцях
+            Console.Write($"{"Разом",-12}");
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write($"{colSums[j],8}");
+            }
+            Console.WriteLine($"{grandTotal,8}");
+        }
+    }
+}
