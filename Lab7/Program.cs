@@ -5,6 +5,8 @@ namespace Hotel
 {
     class Program
     {
+        const double PricePerNight = 1200.0;  // ціна за ніч, грн
+        const double DiscountPercent = 10.0;  // знижка, %
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -64,11 +66,20 @@ namespace Hotel
             Console.WriteLine("- double   : ціна за ніч");
             Console.WriteLine("- bool     : чи сплачено");
         }
+        // Рахує вартість проживання, нічого не виводить
+        static double CalculateCost(double nights, double pricePerNight)
+        {
+            return nights * pricePerNight;
+        }
+
+        // Рахує суму після знижки у відсотках
+        static double ApplyDiscount(double total, double percent)
+        {
+            return total * (100.0 - percent) / 100.0;
+        }
         static void ShowCostTable()
         {
             Console.WriteLine("=== Таблиця вартості проживання ===");
-
-            double pricePerNight = 1200.0;
             double from = 0.5;   // півдоби — наприклад, пізній виїзд
             double to = 4.0;
             double step = 0.5;
@@ -78,8 +89,8 @@ namespace Hotel
             // 1e-9 додаємо, щоб остання стрічка не зникла через похибку double
             for (double days = from; days <= to + 1e-9; days += step)
             {
-                double total = days * pricePerNight;
-                double withDiscount = total * 0.9;
+                double total = CalculateCost(days, PricePerNight);
+                double withDiscount = ApplyDiscount(total, DiscountPercent);
                 Console.WriteLine($"{days,8:F1}{total,12:F2}{withDiscount,18:F2}");
             }
         }
@@ -125,7 +136,7 @@ namespace Hotel
 
                 int rowSum = 0; // обнуляється для кожного рядка
 
-                // Внутрішній цикл — стовпці (дні)
+                // Внутрішній цикл - стовпці (дні)
                 for (int j = 1; j <= cols; j++)
                 {
                     int val = i * j; // умовна кількість зайнятих номерів
