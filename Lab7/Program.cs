@@ -156,25 +156,32 @@ namespace Hotel
         {
             Console.WriteLine("=== Зведена таблиця завантаженості ===");
 
-            Console.Write("Введіть кількість категорій (рядків, 1–20): ");
-            int rows;
-            if (!int.TryParse(Console.ReadLine(), out rows) || rows <= 0 || rows > 20)
-            {
-                Console.WriteLine("Помилка! Потрібне ціле число від 1 до 20.");
-                return;
-            }
-
-            Console.Write("Введіть кількість днів (стовпців, 1–10): ");
-            int cols;
-            if (!int.TryParse(Console.ReadLine(), out cols) || cols <= 0 || cols > 10)
-            {
-                Console.WriteLine("Помилка! Потрібне ціле число від 1 до 10.");
-                return;
-            }
-
+            int rows = ReadInt("Введіть кількість категорій (рядків, 1–20): ", 1, 20);
+            int cols = ReadInt("Введіть кількість днів (стовпців, 1–10): ", 1, 10);
             Console.WriteLine();
 
-            // Шапка таблиці (друкується до зовнішнього циклу)
+            PrintOccupancyTable(rows, cols);
+        }
+
+        // Умовна кількість зайнятих номерів категорії в певний день
+        static int CalculateOccupied(int category, int day)
+        {
+            return category * day;
+        }
+
+        // Сума по одному дню для всіх категорій
+        static int CalculateColumnSum(int rows, int day)
+        {
+            int sum = 0;
+            for (int i = 1; i <= rows; i++)
+            {
+                sum += CalculateOccupied(i, day);
+            }
+            return sum;
+        }
+
+        static void PrintOccupancyHeader(int cols)
+        {
             Console.Write($"{"Категорія",-12}");
             for (int j = 1; j <= cols; j++)
             {
@@ -182,8 +189,12 @@ namespace Hotel
                 Console.Write($"{head,8}");
             }
             Console.WriteLine($"{"Разом",8}");
+        }
 
-            int[] colSums = new int[cols]; // підсумки по стовпцях
+        static void PrintOccupancyTable(int rows, int cols)
+        {
+            PrintOccupancyHeader(cols);
+
             int grandTotal = 0;
 
             // Зовнішній цикл — рядки (категорії)
@@ -194,12 +205,11 @@ namespace Hotel
 
                 int rowSum = 0; // обнуляється для кожного рядка
 
-                // Внутрішній цикл - стовпці (дні)
+                // Внутрішній цикл — стовпці (дні)
                 for (int j = 1; j <= cols; j++)
                 {
-                    int val = i * j; // умовна кількість зайнятих номерів
+                    int val = CalculateOccupied(i, j);
                     rowSum += val;
-                    colSums[j - 1] += val;
                     Console.Write($"{val,8}");
                 }
 
@@ -207,11 +217,17 @@ namespace Hotel
                 grandTotal += rowSum;
             }
 
-            // Рядок підсумків по стовпцях
+            PrintOccupancyTotals(rows, cols, grandTotal);
+        }
+
+        // Рядок підсумків по стовпцях
+        static void PrintOccupancyTotals(int rows, int cols, int grandTotal)
+        {
             Console.Write($"{"Разом",-12}");
-            for (int j = 0; j < cols; j++)
+            for (int j = 1; j <= cols; j++)
             {
-                Console.Write($"{colSums[j],8}");
+                int colSum = CalculateColumnSum(rows, j);
+                Console.Write($"{colSum,8}");
             }
             Console.WriteLine($"{grandTotal,8}");
         }
