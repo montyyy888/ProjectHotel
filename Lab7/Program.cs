@@ -37,7 +37,7 @@ namespace Hotel
         }
         static void ShowMenu()
         {
-            Console.WriteLine("=== Готель ===");
+            PrintTitle("Готель");
             Console.WriteLine("1 — довідка про програму");
             Console.WriteLine("2 — вартість проживання");
             Console.WriteLine("3 — завантаженість готелю по днях");
@@ -45,6 +45,10 @@ namespace Hotel
             Console.Write("Ваш вибір: ");
         }
 
+        static void PrintTitle(string title)
+        {
+            Console.WriteLine("=== " + title + " ===");
+        }
         static void Pause()
         {
             Console.WriteLine("\nНатисніть будь-яку клавішу...");
@@ -129,7 +133,7 @@ namespace Hotel
         }
         static void ShowCostTable()
         {
-            Console.WriteLine("=== Таблиця вартості проживання ===");
+            PrintTitle("Таблиця вартості проживання");
             double start = ReadDouble("Початок (ночей, 0,5–10): ", 0.5, 10.0);
             double end = ReadDouble("Кінець (ночей, не менше за початок, до 10): ", start, 10.0);
             double step = ReadDouble("Крок (ночей, 0,5–5): ", 0.5, 5.0);
@@ -154,7 +158,7 @@ namespace Hotel
         }
         static void ShowOccupancyTable()
         {
-            Console.WriteLine("=== Зведена таблиця завантаженості ===");
+            PrintTitle("Зведена таблиця завантаженості");
 
             int rows = ReadInt("Введіть кількість категорій (рядків, 1–20): ", 1, 20);
             int cols = ReadInt("Введіть кількість днів (стовпців, 1–10): ", 1, 10);
