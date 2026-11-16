@@ -12,12 +12,7 @@ namespace Hotel
             bool running = true;
             while (running)
             {
-                Console.WriteLine("=== Готель ===");
-                Console.WriteLine("1 — довідка про програму");
-                Console.WriteLine("2 — вартість проживання");
-                Console.WriteLine("3 — завантаженість готелю по днях");
-                Console.WriteLine("0 — вихід");
-                Console.Write("Ваш вибір: ");
+                ShowMenu();
 
                 // Trim прибирає випадкові пробіли, null буває при Ctrl+Z
                 string choice = (Console.ReadLine() ?? "").Trim();
@@ -25,28 +20,26 @@ namespace Hotel
 
                 switch (choice)
                 {
-                    case "1":
-                        ShowAbout();
-                        Pause();
-                        break;
-                    case "2":
-                        ShowCostTable();
-                        Pause();
-                        break;
-                    case "3":
-                        ShowOccupancyTable();
-                        Pause();
-                        break;
-                    case "0":
-                        running = false;
-                        Console.WriteLine("До побачення!");
-                        break;
+                    case "1": ShowAbout(); Pause(); break;
+                    case "2": ShowCostTable(); Pause(); break;
+                    case "3": ShowOccupancyTable(); Pause(); break;
+                    case "0": running = false; break;
                     default:
                         Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
                         Pause();
                         break;
                 }
             }
+            Console.WriteLine("До побачення!");
+        }
+        static void ShowMenu()
+        {
+            Console.WriteLine("=== Готель ===");
+            Console.WriteLine("1 — довідка про програму");
+            Console.WriteLine("2 — вартість проживання");
+            Console.WriteLine("3 — завантаженість готелю по днях");
+            Console.WriteLine("0 — вихід");
+            Console.Write("Ваш вибір: ");
         }
 
         static void Pause()
