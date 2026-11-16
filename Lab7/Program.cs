@@ -130,7 +130,12 @@ namespace Hotel
         static void ShowCostTable()
         {
             Console.WriteLine("=== Таблиця вартості проживання ===");
-            PrintCostTable(0.5, 4.0, 0.5);
+            double start = ReadDouble("Початок (ночей, 0,5–10): ", 0.5, 10.0);
+            double end = ReadDouble("Кінець (ночей, не менше за початок, до 10): ", start, 10.0);
+            double step = ReadDouble("Крок (ночей, 0,5–5): ", 0.5, 5.0);
+            Console.WriteLine();
+
+            PrintCostTable(start, end, step);
         }
 
         // Табулювання: вартість залежно від кількості ночей
