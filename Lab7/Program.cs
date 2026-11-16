@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 namespace Hotel
@@ -76,6 +77,55 @@ namespace Hotel
         static double ApplyDiscount(double total, double percent)
         {
             return total * (100.0 - percent) / 100.0;
+        }
+        static double ReadDouble(string prompt, double min, double max)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string text = (Console.ReadLine() ?? "").Trim();
+
+                double value;
+                // приймаємо і кому, і крапку
+                bool ok = double.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out value)
+                       || double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+
+                if (!ok)
+                {
+                    Console.WriteLine("Помилка! Це не число. Спробуйте ще раз.");
+                }
+                else if (!(value >= min && value <= max)) // так відсіюється і NaN
+                {
+                    Console.WriteLine("Помилка! Число має бути від " + min + " до " + max + ".");
+                }
+                else
+                {
+                    return value;
+                }
+            }
+        }
+
+        static int ReadInt(string prompt, int min, int max)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string text = (Console.ReadLine() ?? "").Trim();
+
+                int value;
+                if (!int.TryParse(text, out value))
+                {
+                    Console.WriteLine("Помилка! Потрібне ціле число. Спробуйте ще раз.");
+                }
+                else if (value < min || value > max)
+                {
+                    Console.WriteLine("Помилка! Число має бути від " + min + " до " + max + ".");
+                }
+                else
+                {
+                    return value;
+                }
+            }
         }
         static void ShowCostTable()
         {
