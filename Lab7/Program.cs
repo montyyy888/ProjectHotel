@@ -80,14 +80,17 @@ namespace Hotel
         static void ShowCostTable()
         {
             Console.WriteLine("=== Таблиця вартості проживання ===");
-            double from = 0.5;   // півдоби — наприклад, пізній виїзд
-            double to = 4.0;
-            double step = 0.5;
+            PrintCostTable(0.5, 4.0, 0.5);
+        }
 
-            Console.WriteLine($"{"Ночей",8}{"Вартість",12}{"Зі знижкою 10%",18}");
+        // Табулювання: вартість залежно від кількості ночей
+        static void PrintCostTable(double start, double end, double step)
+        {
+            string discountHead = "Зі знижкою " + DiscountPercent + "%";
+            Console.WriteLine($"{"Ночей",8}{"Вартість",12}{discountHead,18}");
 
             // 1e-9 додаємо, щоб остання стрічка не зникла через похибку double
-            for (double days = from; days <= to + 1e-9; days += step)
+            for (double days = start; days <= end + 1e-9; days += step)
             {
                 double total = CalculateCost(days, PricePerNight);
                 double withDiscount = ApplyDiscount(total, DiscountPercent);
