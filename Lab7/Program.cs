@@ -41,6 +41,13 @@ namespace Hotel
                     case "5": ShowValues(values, count); Pause(); break;
                     case "6": ShowStatistics(values, count); Pause(); break;
                     case "7": DemoValueVsReference(); Pause(); break;
+                    case "8":
+                        {
+                            int number = ReadInt("Номер для видалення (як у таблиці): ", 1, Capacity);
+                            RemoveAt(values, ref count, number - 1);
+                            Pause();
+                            break;
+                        }
                     case "0": running = false; break;
                     default:
                         Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
@@ -60,6 +67,7 @@ namespace Hotel
             Console.WriteLine("5 — показати всі значення");
             Console.WriteLine("6 — показати статистику");
             Console.WriteLine("7 — дослід: значення і посилання");
+            Console.WriteLine("8 — видалити за номером");
             Console.WriteLine("0 — вихід");
             Console.Write("Ваш вибір: ");
         }
@@ -361,6 +369,24 @@ namespace Hotel
             Console.WriteLine();
             Console.WriteLine("price не змінився: метод отримав копію значення.");
             Console.WriteLine("prices[0] змінився: метод отримав адресу того самого масиву.");
+        }
+
+        // Видаляє елемент і зсуває решту вліво; лічильник змінюється через ref
+        static void RemoveAt(double[] values, ref int count, int index)
+        {
+            if (index < 0 || index >= count)
+            {
+                Console.WriteLine("Помилка! Немає елемента з таким номером.");
+                return;
+            }
+
+            for (int i = index; i < count - 1; i++)
+            {
+                values[i] = values[i + 1];
+            }
+            count--;
+            values[count] = 0; // звільнене місце обнуляємо
+            Console.WriteLine("Елемент видалено.");
         }
     }
 }
