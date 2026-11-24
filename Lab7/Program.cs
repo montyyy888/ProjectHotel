@@ -12,8 +12,12 @@ namespace Hotel
         {
             Console.OutputEncoding = Encoding.UTF8;
 
+            const int Capacity = 100;                 // місткість масиву
+            double[] values = new double[Capacity];   // ціни за ніч, грн
+            int count = 0;                            // скільки місць зайнято
             bool running = true;
             while (running)
+
             {
                 ShowMenu();
 
@@ -26,6 +30,14 @@ namespace Hotel
                     case "1": ShowAbout(); Pause(); break;
                     case "2": ShowCostTable(); Pause(); break;
                     case "3": ShowOccupancyTable(); Pause(); break;
+                    case "4":
+                        {
+                            double newValue = ReadDouble("Введіть ціну за ніч (0–100000): ", 0, 100000);
+                            AddValue(values, ref count, newValue, Capacity);
+                            Console.WriteLine("Записів тепер (лічильник у Main): " + count);
+                            Pause();
+                            break;
+                        }
                     case "0": running = false; break;
                     default:
                         Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
@@ -41,6 +53,7 @@ namespace Hotel
             Console.WriteLine("1 — довідка про програму");
             Console.WriteLine("2 — вартість проживання");
             Console.WriteLine("3 — завантаженість готелю по днях");
+            Console.WriteLine("4 — додати значення (ціну за ніч)");
             Console.WriteLine("0 — вихід");
             Console.Write("Ваш вибір: ");
         }
@@ -234,6 +247,18 @@ namespace Hotel
                 Console.Write($"{colSum,8}");
             }
             Console.WriteLine($"{grandTotal,8}");
+        }
+
+        // Додає значення в кінець масиву; лічильник змінюється через ref
+        static void AddValue(double[] values, ref int count, double newValue, int capacity)
+        {
+            if (count == capacity)
+            {
+                Console.WriteLine("Місця більше немає.");
+                return;
+            }
+            values[count] = newValue;
+            count++;
         }
     }
 }
