@@ -40,6 +40,7 @@ namespace Hotel
                         }
                     case "5": ShowValues(values, count); Pause(); break;
                     case "6": ShowStatistics(values, count); Pause(); break;
+                    case "7": DemoValueVsReference(); Pause(); break;
                     case "0": running = false; break;
                     default:
                         Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
@@ -58,6 +59,7 @@ namespace Hotel
             Console.WriteLine("4 — додати значення (ціну за ніч)");
             Console.WriteLine("5 — показати всі значення");
             Console.WriteLine("6 — показати статистику");
+            Console.WriteLine("7 — дослід: значення і посилання");
             Console.WriteLine("0 — вихід");
             Console.Write("Ваш вибір: ");
         }
@@ -330,6 +332,35 @@ namespace Hotel
             Console.WriteLine($"Сума: {sum:F2} грн");
             Console.WriteLine($"Середня ціна: {average:F2} грн");
             Console.WriteLine($"Найбільша ціна: {max:F2} грн (№ {maxNumber})");
+        }
+
+        // Значиме передається копією: зміна видна тільки всередині
+        static void IncreasePrice(int price)
+        {
+            price = price + 100;
+        }
+
+        // Масив передається посиланням: змінюється той самий масив
+        static void IncreaseFirstPrice(double[] prices)
+        {
+            prices[0] = prices[0] + 100;
+        }
+
+        static void DemoValueVsReference()
+        {
+            PrintTitle("Дослід: значення і посилання");
+
+            int price = 50;
+            double[] prices = { 50, 70, 90 };
+
+            Console.WriteLine("До виклику:    price = " + price + ", prices[0] = " + prices[0]);
+            IncreasePrice(price);
+            IncreaseFirstPrice(prices);
+            Console.WriteLine("Після виклику: price = " + price + ", prices[0] = " + prices[0]);
+
+            Console.WriteLine();
+            Console.WriteLine("price не змінився: метод отримав копію значення.");
+            Console.WriteLine("prices[0] змінився: метод отримав адресу того самого масиву.");
         }
     }
 }
