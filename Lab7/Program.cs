@@ -38,6 +38,8 @@ namespace Hotel
                             Pause();
                             break;
                         }
+                    case "5": ShowValues(values, count); Pause(); break;
+                    case "6": ShowStatistics(values, count); Pause(); break;
                     case "0": running = false; break;
                     default:
                         Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
@@ -54,6 +56,8 @@ namespace Hotel
             Console.WriteLine("2 — вартість проживання");
             Console.WriteLine("3 — завантаженість готелю по днях");
             Console.WriteLine("4 — додати значення (ціну за ніч)");
+            Console.WriteLine("5 — показати всі значення");
+            Console.WriteLine("6 — показати статистику");
             Console.WriteLine("0 — вихід");
             Console.Write("Ваш вибір: ");
         }
@@ -259,6 +263,73 @@ namespace Hotel
             }
             values[count] = newValue;
             count++;
+        }
+
+        // Виводить значення до count таблицею, з клавіатури нічого не читає
+        static void ShowValues(double[] values, int count)
+        {
+            if (count == 0)
+            {
+                Console.WriteLine("Набір порожній.");
+                return;
+            }
+
+            Console.WriteLine($"{"№",4}{"Ціна, грн",14}");
+            for (int i = 0; i < count; i++)
+            {
+                Console.WriteLine($"{i + 1,4}{values[i],14:F2}");
+            }
+            Console.WriteLine("Записів: " + count);
+        }
+
+        // Повертає найбільше значення та його номер через два out-параметри
+        static void FindMax(double[] values, int count, out double max, out int maxNumber)
+        {
+            if (count == 0)
+            {
+                max = 0;
+                maxNumber = 0; // 0 означає «немає»
+                return;
+            }
+
+            max = values[0];
+            maxNumber = 1;
+            for (int i = 1; i < count; i++)
+            {
+                if (values[i] > max)
+                {
+                    max = values[i];
+                    maxNumber = i + 1;
+                }
+            }
+        }
+
+        // Повертає суму та середнє через два out-параметри
+        static void Statistics(double[] values, int count, out double sum, out double average)
+        {
+            sum = 0;
+            for (int i = 0; i < count; i++)
+            {
+                sum += values[i];
+            }
+            average = count > 0 ? sum / count : 0;
+        }
+
+        static void ShowStatistics(double[] values, int count)
+        {
+            if (count == 0)
+            {
+                Console.WriteLine("Набір порожній, статистики немає.");
+                return;
+            }
+
+            Statistics(values, count, out double sum, out double average);
+            FindMax(values, count, out double max, out int maxNumber);
+
+            Console.WriteLine("Записів: " + count);
+            Console.WriteLine($"Сума: {sum:F2} грн");
+            Console.WriteLine($"Середня ціна: {average:F2} грн");
+            Console.WriteLine($"Найбільша ціна: {max:F2} грн (№ {maxNumber})");
         }
     }
 }
